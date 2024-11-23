@@ -4,11 +4,13 @@ using System;
 public partial class Player : CharacterBody2D
 {
 	public const float speed = 150.0f;
-	private AnimatedSprite2D animation;
+	private AnimationPlayer animation;
+	private Sprite2D weapon;
 
 	public override void _Ready()
 	{
-		animation = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
+		animation = GetNode<AnimationPlayer>("AnimationPlayer");
+		weapon = GetNode<Sprite2D>("MeleeWeapon");
 	}
 	public override void _Process(double delta)
 	{
@@ -18,10 +20,13 @@ public partial class Player : CharacterBody2D
 		if (direction != Vector2.Zero)
 		{
 			velocity = direction * speed;
-			if (direction.X != 0)
+			if (direction.X > 0)
 			{
-				animation.Play("walk");
-				animation.FlipH = direction.X < 0;
+				animation.Play("walk_right");
+			}
+			else if (direction.X < 0)
+			{
+				animation.Play("walk_left");
 			}
 			else if (direction.Y > 0)
 			{
