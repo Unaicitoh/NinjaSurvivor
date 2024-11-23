@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://b0w0mvnkhnene"]
+
+[ext_resource type="PackedScene" uid="uid://by6wissqun38m" path="res://scenes/Arena.tscn" id="1_vwonq"]
+[ext_resource type="PackedScene" uid="uid://d27tgl25p8g58" path="res://scenes/Player.tscn" id="2_s2hus"]
+
+[node name="Game" type="Node2D"]
+position = Vector2(1, -3)
+
+[node name="TerrainLayer" parent="." instance=ExtResource("1_vwonq")]
+texture_filter = 1
+
+[node name="Player" parent="." instance=ExtResource("2_s2hus")]
+position = Vector2(550, 440)
