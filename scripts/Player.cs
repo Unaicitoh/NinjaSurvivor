@@ -1,23 +1,37 @@
+using Enums;
 using Godot;
 using System;
+using static Enums.Direction;
 
 public partial class Player : CharacterBody2D
 {
 	public const float speed = 150.0f;
 	private AnimationPlayer animation;
+	private PackedScene projectileScene;
 	private Sprite2D weapon;
-	private const float rotation_factor = .5f;
+	private const float rotation_factor = .4f;
+	private bool isAttacking = false;
+	private Vector2 mouseDirection;
+	private Node2D projectile;
 
 	public override void _Ready()
 	{
 		animation = GetNode<AnimationPlayer>("AnimationPlayer");
-		weapon = GetNode<Sprite2D>("MeleeWeapon");
+		weapon = GetNode<Sprite2D>("Area2D/MeleeWeapon");
+		projectileScene = GD.Load<PackedScene>("res://scenes/Projectile.tscn");
 	}
 	public override void _PhysicsProcess(double delta)
 	{
+		/*Need Player Global Position due to World Coordinates (Viewport mouse position would need a conversion)
+		 GetViewportTransform() * GlobalPosition */
+		mouseDirection = (GetGlobalMousePosition() - GlobalPosition).Normalized();
+		// GD.Print($"Mouse direction offset from player: {mouseDirection}");
+		if (projectile != null)
+		{
+			projectile.Position += (Vector2)projectile.GetMeta("velocity");
+		}
+		// Player movement logic
 		Vector2 velocity = Velocity;
-
-		// Player movement
 		Vector2 playerDirection = Input.GetVector("left", "right", "up", "down");
 		if (playerDirection != Vector2.Zero)
 		{
@@ -28,43 +42,109 @@ public partial class Player : CharacterBody2D
 			velocity.X = Mathf.MoveToward(Velocity.X, 0, speed);
 			velocity.Y = Mathf.MoveToward(Velocity.Y, 0, speed);
 			// animation.Play("idle");
-			animation.Stop();
+			if (!isAttacking)
+			{
+				animation.Stop();
+			}
+		}
+
+		if (isAttacking)
+		{
+			velocity /= 2;
+		}
+		else
+		{
+			playAnimation("walk");
 		}
 		Velocity = velocity;
 		MoveAndSlide();
+	}
 
-		// Top-Right-Left-Bottom ANIMATION + ROTATION
-		/*Need Player Global Position due to World Coordinates (Viewport mouse position would need a conversion)
-		 GetViewportTransform() * GlobalPosition */
-		var mousePosition = GetGlobalMousePosition();
-		var mouseDirection = (mousePosition - GlobalPosition).Normalized();
-		var targetRotation = mouseDirection * rotation_factor;
-		// GD.Print($"Mouse direction offset from player: {mouseDirection}");
-		if (Mathf.Abs(mouseDirection.X) > Mathf.Abs(mouseDirection.Y))
+	public override void _Input(InputEvent @event)
+	{
+		if (@event.IsActionPressed("melee_attack") && !isAttacking)
+		{
+			isAttacking = true;
+			playAnimation("attack");
+		}
+		else if (@event.IsActionPressed("ranged_attack") && !isAttacking)
+		{
+			projectile = (Area2D)projectileScene.Instantiate();
+			projectile.Rotation = mouseDirection.Angle();
+			projectile.Position = GlobalPosition + mouseDirection * 100;
+			projectile.SetMeta("velocity", mouseDirection);
+			isAttacking = true;
+			playAnimation("attack");
+			GetTree().CurrentScene.AddChild(projectile);
+		}
+	}
+
+	private void OnAnimationFinished(StringName animationName)
+	{
+		if (animationName.ToString().StartsWith("attack"))
+		{
+			isAttacking = false;
+		}
+		if (Input.IsActionPressed("melee_attack"))
+		{
+			isAttacking = true;
+			playAnimation("attack");
+		}
+	}
+
+	//Checks the mouse position relative to the player and return the equivalent Quadrant
+	private Direction getMouseQuadrant()
+	{
+		if (Math.Abs(mouseDirection.X) > Math.Abs(mouseDirection.Y))
 		{
 			if (mouseDirection.X > 0)
 			{
-				Rotation = targetRotation.Y;
-				animation.Play("walk_right");
+				return RIGHT;
 			}
-			else //FlipH updates on Animations + Godot counter-clockwise rotations as positive values FORCE this negation
+			else
 			{
-				Rotation = -targetRotation.Y;
-				animation.Play("walk_left");
+				return LEFT;
 			}
 		}
 		else
 		{
 			if (mouseDirection.Y > 0)
 			{
-				Rotation = -targetRotation.X;
-				animation.Play("walk_down");
+				return DOWN;
 			}
 			else
 			{
-				Rotation = targetRotation.X;
-				animation.Play("walk_up");
+				return TOP;
 			}
+		}
+	}
+
+	// Top-Right-Left-Bottom Movement/Attack Animation + ROTATION
+	// Need to negate some directions due to flipH property on Animations
+	private void playAnimation(string animationType)
+	{
+		var targetRotation = mouseDirection * rotation_factor;
+		switch (getMouseQuadrant())
+		{
+			case TOP:
+				Rotation = targetRotation.X;
+				animation.Play($"{animationType}_up");
+				break;
+			case RIGHT:
+				Rotation = targetRotation.Y;
+				animation.Play($"{animationType}_right");
+				break;
+			case DOWN:
+				Rotation = -targetRotation.X;
+				animation.Play($"{animationType}_down");
+				break;
+			case LEFT:
+				Rotation = -targetRotation.Y;
+				animation.Play($"{animationType}_left");
+				break;
+			default:
+				GD.PrintErr("Invalid Direction to Move");
+				break;
 		}
 	}
 }
