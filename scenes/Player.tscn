@@ -1,10 +1,10 @@
 [gd_scene load_steps=20 format=3 uid="uid://d27tgl25p8g58"]
 
-[ext_resource type="Texture2D" uid="uid://uiqa86t6b86u" path="res://assets/characters/NinjaRed/SpriteSheet.png" id="1_dlb78"]
+[ext_resource type="Texture2D" uid="uid://uiqa86t6b86u" path="res://assets/textures/characters/NinjaRed/SpriteSheet.png" id="1_dlb78"]
 [ext_resource type="Script" path="res://scripts/Player.cs" id="1_t7pu8"]
-[ext_resource type="Texture2D" uid="uid://djy0oilt0s6ru" path="res://assets/characters/Shadow.png" id="2_3a80c"]
-[ext_resource type="Texture2D" uid="uid://b566t108c24u0" path="res://assets/characters/weapons/Sword2/SpriteInHand.png" id="4_2mbj4"]
-[ext_resource type="Texture2D" uid="uid://c17ltn1lri0do" path="res://assets/characters/weapons/Bow2/Sprite.png" id="5_iqmla"]
+[ext_resource type="Texture2D" uid="uid://djy0oilt0s6ru" path="res://assets/textures/characters/Shadow.png" id="2_3a80c"]
+[ext_resource type="Texture2D" uid="uid://b566t108c24u0" path="res://assets/textures/weapons/Sword2/SpriteInHand.png" id="4_2mbj4"]
+[ext_resource type="Texture2D" uid="uid://c17ltn1lri0do" path="res://assets/textures/weapons/Bow2/SpriteInHand.png" id="5_iqmla"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_smbii"]
 blend_mode = 2
@@ -1280,6 +1280,7 @@ vframes = 7
 frame = 3
 
 [node name="Area2D" type="Area2D" parent="."]
+visible = false
 
 [node name="MeleeWeapon" type="Sprite2D" parent="Area2D"]
 position = Vector2(-5.33333, 13.3333)
@@ -1293,7 +1294,6 @@ rotation = -0.785397
 shape = SubResource("CapsuleShape2D_7qv7g")
 
 [node name="RangeWeapon" type="Sprite2D" parent="."]
-visible = false
 position = Vector2(-5.33333, 6)
 rotation = 0.523598
 texture = ExtResource("5_iqmla")

@@ -1,7 +1,7 @@
 [gd_scene load_steps=9 format=4 uid="uid://by6wissqun38m"]
 
-[ext_resource type="Texture2D" uid="uid://ddyqvwdis33d1" path="res://assets/maps/TilesetTerrain.png" id="1_ct0pl"]
-[ext_resource type="Texture2D" uid="uid://cl14xlacxgl8g" path="res://assets/maps/TilesetHouse.png" id="2_njpbv"]
+[ext_resource type="Texture2D" uid="uid://ddyqvwdis33d1" path="res://assets/textures/maps/TilesetTerrain.png" id="1_ct0pl"]
+[ext_resource type="Texture2D" uid="uid://cl14xlacxgl8g" path="res://assets/textures/maps/TilesetHouse.png" id="2_njpbv"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_wtglp"]
 texture = ExtResource("1_ct0pl")

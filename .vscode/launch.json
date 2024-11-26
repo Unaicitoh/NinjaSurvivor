@@ -1,0 +1,20 @@
+{
+    "version": "2.0.0",
+    "configurations": [
+        {
+            "name": "Launch Project",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/bin/godot.windows.editor.dev.x86_64.exe",
+            // Change the arguments below for the project you want to test with.
+            // To run the project instead of editing it, remove the "--editor" argument.
+            "args": [ "--editor", "--path", "D:\\Dev\\GameDev\\NinjaSurvivor" ],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "console": "internalConsole",
+            "visualizerFile": "${workspaceFolder}/platform/windows/godot.natvis",
+            "preLaunchTask": "build"
+        }
+    ]
+}
