@@ -1,10 +1,27 @@
-[gd_scene load_steps=20 format=3 uid="uid://d27tgl25p8g58"]
+[gd_scene load_steps=24 format=3 uid="uid://d27tgl25p8g58"]
 
 [ext_resource type="Texture2D" uid="uid://uiqa86t6b86u" path="res://assets/textures/characters/NinjaRed/SpriteSheet.png" id="1_dlb78"]
 [ext_resource type="Script" path="res://scripts/Player.cs" id="1_t7pu8"]
 [ext_resource type="Texture2D" uid="uid://djy0oilt0s6ru" path="res://assets/textures/characters/Shadow.png" id="2_3a80c"]
+[ext_resource type="Script" path="res://scripts/Weapon.cs" id="3_e55ab"]
 [ext_resource type="Texture2D" uid="uid://b566t108c24u0" path="res://assets/textures/weapons/Sword2/SpriteInHand.png" id="4_2mbj4"]
+[ext_resource type="Texture2D" uid="uid://bndsrbo0t6wxi" path="res://assets/textures/weapons/Bow2/Projectile.png" id="5_2hbi3"]
 [ext_resource type="Texture2D" uid="uid://c17ltn1lri0do" path="res://assets/textures/weapons/Bow2/SpriteInHand.png" id="5_iqmla"]
+
+[sub_resource type="Resource" id="Resource_l6swr"]
+script = ExtResource("3_e55ab")
+name = "sword"
+damage = 10
+image = ExtResource("4_2mbj4")
+isRanged = false
+
+[sub_resource type="Resource" id="Resource_4egsr"]
+script = ExtResource("3_e55ab")
+name = "bow"
+damage = 0
+image = ExtResource("5_iqmla")
+isRanged = true
+projectile = ExtResource("5_2hbi3")
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_smbii"]
 blend_mode = 2
@@ -1266,6 +1283,7 @@ _data = {
 [node name="Player" type="CharacterBody2D"]
 position = Vector2(67, 29)
 script = ExtResource("1_t7pu8")
+weaponsData = Array[Object]([SubResource("Resource_l6swr"), SubResource("Resource_4egsr")])
 
 [node name="Shadow" type="Sprite2D" parent="."]
 material = SubResource("CanvasItemMaterial_smbii")

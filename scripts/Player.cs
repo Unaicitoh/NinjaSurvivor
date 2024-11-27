@@ -14,6 +14,8 @@ public partial class Player : CharacterBody2D
 	private Sprite2D rangedWeapon;
 	private bool isAttacking = false;
 	private Vector2 mouseDirection;
+	[Export]
+	private Weapon[] weaponsData;
 
 	public override void _Ready()
 	{
