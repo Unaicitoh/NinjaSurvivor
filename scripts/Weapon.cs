@@ -13,5 +13,5 @@ public partial class Weapon : Resource
     [Export]
     private bool isRanged { get; set; }
     [Export]
-    private Texture2D projectile { get; set; }
+    private Texture2D projectiles { get; set; }
 }
